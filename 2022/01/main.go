@@ -25,13 +25,26 @@ func mostCalories(filePath string) int {
 	readFile.Close()
 
 	maximumCalories := 0
+	secondMostCalories := 0
+	thirdMostCalories := 0
 	currentCallorieSum := 0
 
 	for _, line := range fileLines {
 		if line == "" {
 			if currentCallorieSum > maximumCalories {
+				thirdMostCalories = secondMostCalories
+				secondMostCalories = maximumCalories
 				maximumCalories = currentCallorieSum
+			} else if currentCallorieSum > secondMostCalories {
+				thirdMostCalories = secondMostCalories
+				secondMostCalories = currentCallorieSum
+			} else if currentCallorieSum > thirdMostCalories {
+				thirdMostCalories = currentCallorieSum
 			}
+
+			fmt.Printf("First: %v \n", maximumCalories)
+			fmt.Printf("Seconds: %v \n", secondMostCalories)
+			fmt.Printf("Third: %v \n", thirdMostCalories)
 			currentCallorieSum = 0
 		} else {
 			var calories int
@@ -44,7 +57,7 @@ func mostCalories(filePath string) int {
 		}
 	}
 
-	return maximumCalories
+	return maximumCalories + secondMostCalories + thirdMostCalories
 }
 
 func main() {
